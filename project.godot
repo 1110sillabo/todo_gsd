@@ -1,0 +1,15 @@
+[config]
+config_version=5
+
+[application]
+config/name="Todo App on Steroids"
+config/features=PackedStringArray("4.6", "Forward Plus")
+config/icon="res://icon.svg"
+
+[dotnet]
+project/assembly_name="Todo App on Steroids"
+
+[rendering]
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
+textures/vram_compression/import_etc2_astc=true
