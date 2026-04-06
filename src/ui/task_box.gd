@@ -5,5 +5,6 @@ class_name TaskBox
 
 func _ready() -> void:
 	# Connect zoom/pan for touch support in Godot 4.6
-	panning_scheme = PAN_PADDLE
+	# Fallback if constant is missing in some 4.x versions
+	panning_scheme = 1 # 1 is GraphEdit.PanningScheme.PAN_PADDLE
 	# Loading logic will be implemented in wave 2
