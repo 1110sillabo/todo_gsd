@@ -35,7 +35,9 @@ func _on_node_moved(node: TaskNode) -> void:
 func _load_existing_tasks() -> void:
 	var pm := PersistenceManager.new()
 	var task_files := pm.list_tasks()
+	print("Found %d task files in %s" % [task_files.size(), pm.TASKS_PATH])
 	for file_name in task_files:
 		var task := pm.load_task(file_name)
 		if task:
+			print("Loading task: ", task.title)
 			_create_task_node(task)

@@ -9,7 +9,12 @@ func _ready() -> void:
 ## Saves a TaskResource to the specified path.
 func save_task(task: TaskResource) -> Error:
 	var path: String = TASKS_PATH + "%s.tres" % task.title.validate_filename()
-	return ResourceSaver.save(task, path)
+	var err: Error = ResourceSaver.save(task, path)
+	if err != OK:
+		printerr("FAILED to save task to %s: %d" % [path, err])
+	else:
+		print("SUCCESSFULLY saved task to %s" % path)
+	return err
 
 ## Loads a TaskResource from the specified path.
 func load_task(filename: String) -> TaskResource:
