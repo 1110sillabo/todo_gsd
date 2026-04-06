@@ -10,21 +10,23 @@ The "Todo App on Steroids" is a hybrid project combining task management, struct
 
 **Godot Resources (`.tres`)** are the recommended alternative to SQLite. Since the 3 main sections (Tasks, Blog, Decision Log) are isolated with no internal code dependencies, the relational overhead of a database is unnecessary. Resources provide native serialization, easy versioning, and excellent performance for mobile (Godot 4.6).
 
+The testing strategy follows the **Godotneers "Press Play, Know it works"** approach, utilizing **GdUnit4**. This framework is chosen for its deep IDE integration and support for both unit testing (Resources/Logic) and UI integration testing (GraphEdit/TextEdit) via automated input simulation.
+
 ## Key Findings
 
-**Stack:** Godot (4.6) + GDScript + Godot Resources.
+**Stack:** Godot (4.6) + GDScript + Godot Resources + **GdUnit4**.
 **Architecture:** Isolated "3-Box" model with a centralized `PersistenceService` using `.tres` files.
-**Critical pitfall:** Risk of building complex relationships between boxes later; must enforce the "Isolated" rule for simplicity.
+**Critical pitfall:** UI interaction complexity in `GraphEdit` can lead to fragile tests; use GdUnit4's `SceneRunner` for robust input simulation.
 
 ## Implications for Roadmap
 
 Based on research, suggested phase structure:
 
-1. **Phase 1: Foundation (Resources & Persistence)** - Establish the `PersistenceService` and the 3 base resource classes.
-   - Addresses: 3-Box baseline.
+1. **Phase 1: Foundation (Resources & Persistence)** - Establish the `PersistenceService` and the 3 base resource classes, alongside the **GdUnit4** test suite.
+   - Addresses: 3-Box baseline and automated testing for the `TaskResource` model.
 
 2. **Phase 2: Task Visualizer (GraphEdit)** - Build the interactive task cluster nodes.
-   - Addresses: Visual Table Stakes.
+   - Addresses: Visual Table Stakes and UI testing for Node interactions.
 
 3. **Phase 3: Blog Box & Export Logic** - Implement the `TextEdit` drafting system and `FileAccess`-based Markdown export.
    - Addresses: Content creation & Portability.

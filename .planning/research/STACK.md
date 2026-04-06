@@ -17,6 +17,11 @@
 | Godot Resources (`.tres`) | 4.6 | Local Data Storage | Excellent for isolated, object-oriented data. Support for simple relationships, built-in serialization, and no external dependencies. |
 | FileAccess | Core | Export/Import | Robust native API for handled .md and .csv generation. |
 
+### Testing & Quality
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| GdUnit4 | Latest | Unit & UI Testing | Recommended by Godotneers. Supports async testing, scene runners for UI (GraphEdit/TextEdit), and deep Editor integration. |
+
 ### Supporting Libraries
 | Library | Version | Purpose | When to Use |
 |---------|---------|---------|-------------|
