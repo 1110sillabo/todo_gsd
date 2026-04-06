@@ -1,6 +1,6 @@
 ## ROADMAP.md draft
-- **Phase 1**: Core Task Engine & SQLite implementation.
-- **Phase 2**: Decision Hub (WRAP framework).
-- **Phase 3**: Drafting Suite (Rich text editing).
-- **Phase 4**: Visualization Dashboard (Graph-based view).
-- **Phase 5**: Mobile Optimization & itch.io release preparation.
+- **Phase 1**: Persistence Foundation (Resource definitions & .tres Saving/Loading).
+- **Phase 2**: TaskBox (Visual GraphEdit implementation).
+- **Phase 3**: BlogBox (Rich text & Markdown export).
+- **Phase 4**: DecisionBox (Log framework & CSV export).
+- **Phase 5**: Mobile UI/UX Pass & Export testing.

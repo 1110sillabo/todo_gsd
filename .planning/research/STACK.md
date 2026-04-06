@@ -11,24 +11,24 @@
 | Godot Engine | 4.6 | Frontend & Logic | Extreme flexibility for standard UI and custom visualizations. Scene system is perfect for "steroid" features. |
 | GDScript | 4.6 | Scripting | High performance for UI logic, easy to iterate for custom frameworks and complex data flows. |
 
-### Database
+### Storage
 | Technology | Version | Purpose | Why |
 |------------|---------|---------|-----|
-| SQLite | 3.x | Local Data | Robust, handles relational data (todos <-> decisions <-> notes) perfectly for a desktop/mobile app. |
-| Godot-SQLite | GDExtension | DB Binding | Native performance for Godot-SQLite integration. |
+| Godot Resources (`.tres`) | 4.6 | Local Data Storage | Excellent for isolated, object-oriented data. Support for simple relationships, built-in serialization, and no external dependencies. |
+| FileAccess | Core | Export/Import | Robust native API for handled .md and .csv generation. |
 
 ### Supporting Libraries
 | Library | Version | Purpose | When to Use |
 |---------|---------|---------|-------------|
 | Godot-GraphEdit | Core | Visualization | To build the visualization dashboard/nodes. |
-| RichTextLabel | Core | Blog/Note Editor | Handles long-form notes with BBCode/Markdown support. |
+| TextEdit | Core | Blog/Note Editor | Handles large text blocks with high efficiency in Godot 4.6. |
 
 ## Alternatives Considered
 
 | Category | Recommended | Alternative | Why Not |
 |----------|-------------|-------------|---------|
-| Frontend | Godot | Flutter | Godot offers better "canvas" control for advanced visualizations and simpler state-to-scene mapping for custom components. |
-| Storage | SQLite | JSON Files | JSON lacks relational querying which will be needed for the decision-to-todo links. |
+| Frontend | Godot | Flutter | Godot offers better "canvas" control for advanced visualizations (GraphEdit). |
+| Storage | Godot Resources | SQLite | SQLite is overkill for isolated sections with low relational complexity. Resources are simpler to manage on mobile. |
 
 ## Installation
 

@@ -1,55 +1,65 @@
 # Feature Landscape
 
-**Domain:** Todo App on Steroids
-**Researched:** April 6, 2026
+**Domain:** Todo App on Steroids (Isolated 3-Box)
+**Researched:** February 2025
+**Overall status:** Updated for Resource-based 3-Box architecture
 
 ## Table Stakes
 
-Features users expect. Missing = product feels incomplete.
+Features users expect in each box. Missing = product feels incomplete.
 
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Task Creation/Lists | Core function | Low | Basic CRUD for todo items. |
-| Due Dates/Reminders | Reliability | Medium | Needs local notification support or polling. |
-| Nested Tasks/Subtasks| "Steroid" feel | Medium | Standard for high-end todo apps. |
+| Feature | Why Expected | Complexity | Box |
+|---------|--------------|------------|-----|
+| **Task Nodes** | Visual task tracking via GraphEdit. | High | TaskBox |
+| **Markdown Editing** | Drafting long-form blog content with TextEdit. | Medium | BlogBox |
+| **Decision Logging** | Chronological record of key project decisions. | Low | DecisionBox |
+| **Local Auto-save** | Native Godot ".tres" serialization on change. | Low | Persistence |
 
 ## Differentiators
 
 Features that set product apart. Not expected, but valued.
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Visualization Dashboard | High-level overview | High | Interactive "nodes" or "graphs" to see task density and relationships. |
-| Decision Frameworks | Structured thoughts | Medium | Built-in templates for WRAP (Widen options, Reality-test, Attain distance, Prepare to fail) or FORDEC. |
-| Blog/Note Linkage | Context retention | Medium | Convert "tasks" into "long notes" or drafts seamlessly. |
-| Decision Archive | Data-driven growth | Low | Keep track of past decisions and their outcomes to review habits. |
+| Feature | Value Proposition | Complexity | Box |
+|---------|-------------------|------------|-----|
+| **Visual Clusters** | Group nodes in GraphEdit for brain-mapping tasks. | Medium | TaskBox |
+| **Markdown Export** | One-tap "FileAccess" export for blog drafts. | Low | BlogBox |
+| **CSV History** | Easy historical analysis of all decision logs. | Low | DecisionBox |
+| **Soft-Tagging** | Simple string-based tags (no code linking between boxes). | Low | Global |
 
 ## Anti-Features
 
-Features to explicitly NOT build.
+Features to explicitly NOT build to maintain isolation.
 
 | Anti-Feature | Why Avoid | What to Do Instead |
 |--------------|-----------|-------------------|
-| Real-time Collaboration | Over-engineering | Keep it local/single-user-first to focus on individual productivity. |
-| Complex Cloud Sync | High infra cost | Local-first; perhaps simple file-based sync (Dropbox/GDrive) later. |
+| **Shared Pointers** | Resource references between boxes (too complex). | Use string tags/IDs. |
+| **Full Relational DB** | SQLite is overkill for isolated data boxes. | Godot Resource files (.tres). |
+| **Cross-Box UI** | Mixing task UI with blog editor (clutters phone screen). | 3 distinct UI "Tabs" or "Screens". |
 
 ## Feature Dependencies
 
 ```
-Task System -> Decision Framework (Linking decisions to actionable items)
-Decision Framework -> Decision Archive (Archiving decisions for retrieval)
-Note Editor -> Blog Post Drafts (Notes are the foundation for the blog posts)
+PersistenceService (Resource Base) -> Task Resource
+PersistenceService (Resource Base) -> Blog Resource
+PersistenceService (Resource Base) -> Decision Resource
+Task Resource -> GraphEdit Canvas Logic
+Blog Resource -> Markdown Export Logic
+Decision Resource -> CSV Export Logic
 ```
 
 ## MVP Recommendation
 
-Prioritize:
-1. Core Todo CRUD with nested tasks.
-2. WRAP decision framework integration.
-3. Minimal Dashboard using GraphEdit to show task relations.
+Prioritize (Phase 1/2 focus):
+1. **Task Canvas:** Basic "GraphNode" creation and position saving.
+2. **Blog Drafts:** Simple "TextEdit" with persistent string storage.
+3. **Decision Log:** Append-only log with a simple data grid or list.
 
-Defer: Blog post export/formatting (Focus on capturing first).
+Defer:
+- **Advanced Graph Visuals:** Complex node connections can wait.
+- **Rich Text Highlighting:** BBCode/Syntax coloring for drafts.
 
 ## Sources
-- [WRAP Framework - Chip & Dan Heath "Decisive"](https://en.wikipedia.org/wiki/Decisive_(Heath_book))
-- [Productivity Pattern Research]
+
+- [Godot 4.3+ TextEdit official docs](https://docs.godotengine.org/en/stable/classes/class_textedit.html)
+- [Godot FileAccess class](https://docs.godotengine.org/en/stable/classes/class_fileaccess.html)
+- [Research into isolated vs relational storage patterns (2025)](https://docs.godotengine.org/en/stable/tutorials/io/resources.html)
