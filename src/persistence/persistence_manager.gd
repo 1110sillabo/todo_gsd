@@ -3,8 +3,19 @@ class_name PersistenceManager
 
 const TASKS_PATH: String = "user://tasks/"
 
+func _init() -> void:
+	var dir = DirAccess.open("user://")
+	if not dir.dir_exists("tasks"):
+		var err = dir.make_dir("tasks")
+		if err != OK:
+			printerr("CRITICAL: Could not create tasks directory: ", err)
+		else:
+			print("Created tasks directory at: ", TASKS_PATH)
+
 func _ready() -> void:
-	DirAccess.make_dir_recursive_absolute(TASKS_PATH)
+	# Keep this as well just in case of autoload timing
+	if not DirAccess.dir_exists_absolute(TASKS_PATH):
+		DirAccess.make_dir_recursive_absolute(TASKS_PATH)
 
 ## Saves a TaskResource to the specified path.
 func save_task(task: TaskResource) -> Error:
