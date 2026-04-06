@@ -9,5 +9,4 @@
     }
   },
   "postCreateCommand": "npm install -g roborev && npx get-shit-done-cc@latest --copilot --global --skip-confirm",
-  "remoteUser": "vscode"
 }
