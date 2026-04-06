@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Review diff with RoboRev/Copilot",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "if command -v roborev >/dev/null 2>&1; then roborev review --local .; else git diff --stat --color=always && echo '\nRoboRev not found; run git diff or install roborev.'; fi"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

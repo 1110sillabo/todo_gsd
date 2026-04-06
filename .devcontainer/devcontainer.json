@@ -1,0 +1,13 @@
+{
+  "name": "todo_gsd Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:0-20",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "GodotEngine.godot-tools"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install -g roborev && npx get-shit-done-cc@latest --copilot --global --skip-confirm",
+  "remoteUser": "vscode"
+}

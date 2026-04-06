@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "GodotEngine.godot-tools",
+    "GitHub.copilot-chat"
+  ],
+  "unwantedRecommendations": []
+}
