@@ -26,8 +26,8 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and event.pressed:
 		_swipe_start = event.position
 	elif event is InputEventScreenDrag and _swipe_start != Vector2.ZERO:
-		var delta_x := event.position.x - _swipe_start.x
-		var delta_y := event.position.y - _swipe_start.y
+		var delta_x: float = event.position.x - _swipe_start.x
+		var delta_y: float = event.position.y - _swipe_start.y
 		if abs(delta_x) > SWIPE_THRESHOLD and abs(delta_x) > abs(delta_y) * 1.5:
 			_swipe_start = Vector2.ZERO
 			if delta_x > 0:
