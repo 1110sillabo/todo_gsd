@@ -7,6 +7,7 @@ extends Control
 @onready var _edit_dialog: AcceptDialog = $TaskEditDialog
 
 var _editing_task_id: String = ""
+var _is_new_task: bool = false
 
 func _ready() -> void:
 	group_expired.setup("Scadute", Color(0.85, 0.25, 0.18), true)
@@ -25,6 +26,7 @@ func _ready() -> void:
 	group_completed.task_edit_requested.connect(_on_task_edit_requested)
 
 	_edit_dialog.task_saved.connect(_on_task_saved)
+	_edit_dialog.canceled.connect(func(): _is_new_task = false)
 
 	fab.pressed.connect(_on_fab_pressed)
 	_load_tasks()
@@ -56,28 +58,9 @@ static func categorize(task: TaskResource, now: int = 0) -> String:
 	return "todo"
 
 func _on_fab_pressed() -> void:
-	var dialog := AcceptDialog.new()
-	dialog.title = "Nuovo task"
-	var vbox := VBoxContainer.new()
-	var line_edit := LineEdit.new()
-	line_edit.placeholder_text = "Titolo del task…"
-	line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	vbox.add_child(line_edit)
-	dialog.add_child(vbox)
-	add_child(dialog)
-	dialog.confirmed.connect(func(): _create_task(line_edit.text, dialog))
-	dialog.canceled.connect(func(): dialog.queue_free())
-	dialog.popup_centered(Vector2(320, 160))
-	line_edit.grab_focus()
-
-func _create_task(title: String, dialog: AcceptDialog) -> void:
-	dialog.queue_free()
-	if title.strip_edges().is_empty():
-		return
+	_is_new_task = true
 	var task := TaskResource.new()
-	task.title = title.strip_edges()
-	PersistenceManager.save_task(task)
-	group_todo.add_task(task)
+	_edit_dialog.show_for_task(task, "Nuovo task")
 
 func _on_task_completed(task: TaskResource) -> void:
 	task.mark_complete()
@@ -101,7 +84,12 @@ func _on_task_edit_requested(task: TaskResource) -> void:
 
 func _on_task_saved(task: TaskResource) -> void:
 	PersistenceManager.save_task(task)
-	_refresh_or_move_row(task)
+	if _is_new_task:
+		_is_new_task = false
+		var now := int(Time.get_unix_time_from_system())
+		_add_to_group(categorize(task, now), task)
+	else:
+		_refresh_or_move_row(task)
 
 func _refresh_or_move_row(task: TaskResource) -> void:
 	var now: int = int(Time.get_unix_time_from_system())

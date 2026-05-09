@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="GSD Todo"
+run/main_scene="res://src/ui/main_scene.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
-run/main_scene="res://src/ui/main_scene.tscn"
+
+[autoload]
+
+PersistenceManager="*res://src/persistence/persistence_manager.gd"
 
 [config]
 
@@ -27,7 +31,3 @@ project/assembly_name="Todo App on Steroids"
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-
-[autoload]
-
-PersistenceManager="*res://src/persistence/persistence_manager.gd"

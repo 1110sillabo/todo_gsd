@@ -19,9 +19,13 @@ func set_task(value: TaskResource) -> void:
 		var now := int(Time.get_unix_time_from_system())
 		var dt := Time.get_datetime_dict_from_unix_time(task.deadline)
 		$MarginContainer/VBoxContainer/DeadlineLabel.text = "%02d/%02d/%04d" % [dt.day, dt.month, dt.year]
+		$MarginContainer/VBoxContainer/DeadlineLabel.visible = true
 		if task.deadline < now:
 			$MarginContainer/VBoxContainer/DeadlineLabel.add_theme_color_override("font_color", Color(0.85, 0.25, 0.18))
+		else:
+			$MarginContainer/VBoxContainer/DeadlineLabel.remove_theme_color_override("font_color")
 	else:
+		$MarginContainer/VBoxContainer/DeadlineLabel.text = ""
 		$MarginContainer/VBoxContainer/DeadlineLabel.visible = false
 
 func _gui_input(event: InputEvent) -> void:
@@ -30,7 +34,7 @@ func _gui_input(event: InputEvent) -> void:
 		_swipe_start = event.position
 		_is_drag = false
 	elif (event is InputEventScreenTouch and not event.pressed) or \
-	     (event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
+		 (event is InputEventMouseButton and not event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
 		if not _is_drag:
 			task_edit_requested.emit(task)
 		_swipe_start = Vector2.ZERO
