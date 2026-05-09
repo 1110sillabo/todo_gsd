@@ -13,11 +13,11 @@ Plans:
 **Requirements:** R01, R02, R03, R04, R09, R10, R11
 **Plans:** 5 plans
 Plans:
-- [ ] 02-01-PLAN.md — PersistenceManager autoload + UUID filenames
-- [ ] 02-02-PLAN.md — TaskRow scene (2-line layout, swipe detection)
-- [ ] 02-03-PLAN.md — GroupSection scene (collapsible, accent header)
-- [ ] 02-04-PLAN.md — MainScene + TaskListView (full wiring, FAB, modal)
-- [ ] 02-05-PLAN.md — GdUnit4 tests (categorization + scene integration)
+- [x] 02-01-PLAN.md — PersistenceManager autoload + UUID filenames
+- [x] 02-02-PLAN.md — TaskRow scene (2-line layout, swipe detection)
+- [x] 02-03-PLAN.md — GroupSection scene (collapsible, accent header)
+- [x] 02-04-PLAN.md — MainScene + TaskListView (full wiring, FAB, modal)
+- [x] 02-05-PLAN.md — GdUnit4 tests (categorization + scene integration)
 
 ### Phase 3: Task Editing
 **Goal:** Inline title edit, calendar date picker for deadline, drag-to-reorder rows.
