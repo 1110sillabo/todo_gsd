@@ -1,5 +1,4 @@
 extends Node
-class_name PersistenceManager
 
 const TASKS_PATH: String = "user://tasks/"
 
