@@ -10,7 +10,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="TaskRow" type="PanelContainer"]
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 72)
 anchor_right = 1.0
 size_flags_horizontal = 3
 script = ExtResource("1_task_row")
@@ -32,10 +32,10 @@ size_flags_vertical = 4
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 size_flags_horizontal = 3
 text = "Task title"
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 22
 
 [node name="DeadlineLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 size_flags_horizontal = 3
 text = "Scadenza"
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 17
 theme_override_colors/font_color = Color(0.55, 0.55, 0.6, 1)
