@@ -9,7 +9,7 @@ func _init() -> void:
 
 ## Saves a TaskResource to the specified path.
 func save_task(task: TaskResource) -> Error:
-	var path: String = TASKS_PATH + "%s.tres" % task.title.validate_filename()
+	var path: String = TASKS_PATH + "%s.tres" % task.task_id
 	return ResourceSaver.save(task, path)
 
 ## Loads a TaskResource from the specified path.

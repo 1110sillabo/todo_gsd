@@ -4,6 +4,7 @@ class_name TaskResource
 ## Signal emitted when the task is completed
 signal completed(task: TaskResource)
 
+@export var task_id: String = ""
 @export var title: String = ""
 @export var description: String = ""
 @export var created_at: int = 0
@@ -13,6 +14,8 @@ signal completed(task: TaskResource)
 @export var tags: Array[String] = []
 
 func _init() -> void:
+	if task_id.is_empty():
+		task_id = "%d_%d" % [Time.get_ticks_msec(), randi()]
 	if created_at == 0:
 		created_at = Time.get_unix_time_from_system()
 
