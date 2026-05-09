@@ -5,6 +5,7 @@ const TASK_ROW_SCENE = preload("res://src/ui/task_row.tscn")
 
 signal task_completed(task: TaskResource)
 signal task_deleted(task: TaskResource)
+signal task_edit_requested(task: TaskResource)
 
 var _expanded: bool = true
 var _accent_color: Color = Color.WHITE
@@ -53,6 +54,7 @@ func add_task(task: TaskResource) -> void:
 	row.task = task
 	row.task_completed.connect(_on_task_completed)
 	row.task_deleted.connect(_on_task_deleted)
+	row.task_edit_requested.connect(func(t): task_edit_requested.emit(t))
 	_update_count()
 
 func remove_task(task: TaskResource) -> void:
@@ -71,6 +73,12 @@ func clear() -> void:
 
 func get_task_count() -> int:
 	return _tasks.size()
+
+func find_row(task_id: String) -> TaskRow:
+	for child in $ItemsContainer.get_children():
+		if child is TaskRow and child.task.task_id == task_id:
+			return child
+	return null
 
 func _on_task_completed(task: TaskResource) -> void:
 	task_completed.emit(task)
