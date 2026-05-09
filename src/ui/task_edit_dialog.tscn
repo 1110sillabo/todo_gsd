@@ -26,13 +26,13 @@ text = "Titolo"
 layout_mode = 2
 placeholder_text = "Titolo attività..."
 
+[node name="DeadlineLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Scadenza"
+
 [node name="DeadlineRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
-
-[node name="DeadlineCheck" type="CheckBox" parent="MarginContainer/VBoxContainer/DeadlineRow"]
-layout_mode = 2
-text = "Scadenza"
 
 [node name="DaySpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/DeadlineRow"]
 layout_mode = 2

@@ -5,19 +5,14 @@ signal task_saved(task: TaskResource)
 var _task: TaskResource = null
 
 @onready var _title_edit: LineEdit = $MarginContainer/VBoxContainer/TitleEdit
-@onready var _deadline_check: CheckBox = $MarginContainer/VBoxContainer/DeadlineRow/DeadlineCheck
 @onready var _day_spin: SpinBox = $MarginContainer/VBoxContainer/DeadlineRow/DaySpinBox
-@onready var _slash1: Label = $MarginContainer/VBoxContainer/DeadlineRow/SlashLabel1
 @onready var _month_spin: SpinBox = $MarginContainer/VBoxContainer/DeadlineRow/MonthSpinBox
-@onready var _slash2: Label = $MarginContainer/VBoxContainer/DeadlineRow/SlashLabel2
 @onready var _year_spin: SpinBox = $MarginContainer/VBoxContainer/DeadlineRow/YearSpinBox
 @onready var _desc_edit: TextEdit = $MarginContainer/VBoxContainer/DescEdit
 
 func _ready() -> void:
 	confirmed.connect(_on_confirmed)
 	_title_edit.text_changed.connect(_on_title_changed)
-	_deadline_check.toggled.connect(_on_deadline_toggled)
-	_update_deadline_controls(false)
 
 func show_for_task(task: TaskResource, dialog_title: String = "Modifica attivitÃ ") -> void:
 	_task = task
@@ -29,29 +24,16 @@ func show_for_task(task: TaskResource, dialog_title: String = "Modifica attivitÃ
 		_day_spin.value = dt.day
 		_month_spin.value = dt.month
 		_year_spin.value = dt.year
-		_deadline_check.button_pressed = true
 	else:
-		var now := Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()))
-		_day_spin.value = now.day
-		_month_spin.value = now.month
-		_year_spin.value = now.year
-		_deadline_check.button_pressed = false
-	_update_deadline_controls(_deadline_check.button_pressed)
+		var tomorrow := Time.get_datetime_dict_from_unix_time(int(Time.get_unix_time_from_system()) + 86400)
+		_day_spin.value = tomorrow.day
+		_month_spin.value = tomorrow.month
+		_year_spin.value = tomorrow.year
 	get_ok_button().disabled = task.title.strip_edges().is_empty()
-	popup_centered(Vector2i(380, 340))
+	popup_centered(Vector2i(360, 320))
 
 func _on_title_changed(new_text: String) -> void:
 	get_ok_button().disabled = new_text.strip_edges().is_empty()
-
-func _on_deadline_toggled(pressed: bool) -> void:
-	_update_deadline_controls(pressed)
-
-func _update_deadline_controls(has_deadline: bool) -> void:
-	_day_spin.visible = has_deadline
-	_slash1.visible = has_deadline
-	_month_spin.visible = has_deadline
-	_slash2.visible = has_deadline
-	_year_spin.visible = has_deadline
 
 func _on_confirmed() -> void:
 	if _task == null:
@@ -61,13 +43,10 @@ func _on_confirmed() -> void:
 		return
 	_task.title = new_title
 	_task.description = _desc_edit.text
-	if _deadline_check.button_pressed:
-		_task.deadline = int(Time.get_unix_time_from_datetime_dict({
-			"day": int(_day_spin.value), "month": int(_month_spin.value),
-			"year": int(_year_spin.value), "hour": 0, "minute": 0, "second": 0
-		}))
-	else:
-		_task.deadline = 0
+	_task.deadline = int(Time.get_unix_time_from_datetime_dict({
+		"day": int(_day_spin.value), "month": int(_month_spin.value),
+		"year": int(_year_spin.value), "hour": 0, "minute": 0, "second": 0
+	}))
 	task_saved.emit(_task)
 
 static func parse_deadline(text: String) -> int:
