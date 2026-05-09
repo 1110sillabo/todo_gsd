@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://task_row"]
+
+[ext_resource type="Script" path="res://src/ui/task_row.gd" id="1_task_row"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.1, 0.12, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="TaskRow" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 56)
+anchor_right = 1.0
+size_flags_horizontal = 3
+script = ExtResource("1_task_row")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+size_flags_horizontal = 3
+text = "Task title"
+theme_override_font_sizes/font_size = 16
+
+[node name="DeadlineLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+size_flags_horizontal = 3
+text = "Scadenza"
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.55, 0.55, 0.6, 1)
