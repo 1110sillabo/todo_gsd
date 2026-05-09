@@ -29,12 +29,22 @@ func _load_tasks() -> void:
 		var task := PersistenceManager.load_task(filename)
 		if task == null:
 			continue
-		if task.completed_at > 0:
-			group_completed.add_task(task)
-		elif task.deadline > 0 and task.deadline < now:
-			group_expired.add_task(task)
-		else:
-			group_todo.add_task(task)
+		match categorize(task, now):
+			"completed":
+				group_completed.add_task(task)
+			"expired":
+				group_expired.add_task(task)
+			_:
+				group_todo.add_task(task)
+
+static func categorize(task: TaskResource, now: int = 0) -> String:
+	if now == 0:
+		now = int(Time.get_unix_time_from_system())
+	if task.completed_at > 0:
+		return "completed"
+	if task.deadline > 0 and task.deadline < now:
+		return "expired"
+	return "todo"
 
 func _on_fab_pressed() -> void:
 	var dialog := AcceptDialog.new()
