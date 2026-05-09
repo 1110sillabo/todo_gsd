@@ -25,9 +25,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — EditTaskDialog scene (AcceptDialog + 3 input fields, deadline parse/format)
-- [ ] 03-02-PLAN.md — Tap detection in TaskRow + wiring in TaskListView (save in-place, recategorize)
-- [ ] 03-03-PLAN.md — GdUnit4 tests for deadline parsing and formatting
+- [x] 03-01-PLAN.md — EditTaskDialog scene (AcceptDialog + 3 input fields, deadline parse/format)
+- [x] 03-02-PLAN.md — Tap detection in TaskRow + wiring in TaskListView (save in-place, recategorize)
+- [x] 03-03-PLAN.md — GdUnit4 tests for deadline parsing and formatting
 
 ### Phase 4: Notes UI
 **Goal:** Notes tab with scrollable list + tap-to-open full-screen text editor.
