@@ -69,3 +69,41 @@ Should show: `android:screenOrientation='portrait'`
 - Consider adding `export_presets.cfg` to `.gitignore` or committing it explicitly after each stable export configuration.
 - The 3-dot menu (R08) and Stats stub (R09) are still unbuilt — they are the core of Phase 5.
 - Phase 4 (Notes UI) should be completed before Phase 5 formal execution.
+
+---
+
+## Session 2026-05-09 — Mobile polish bug fixes
+
+### Orientation fix (root cause resolved)
+- **Problem**: App was landscape despite `project.godot` having `window/handheld/orientation=1`.
+- **Root cause**: Godot writes the AndroidManifest orientation from `export_presets.cfg` (`screen/orientation`), NOT from `project.godot`. The key was missing; Android defaulted to landscape.
+- **Fix**: `screen/orientation=1` added to export_presets.cfg. Also `permissions/set_orientation=true` was already present.
+- **User-side fix**: Portrait must also be set in Godot Editor → Project Settings → Display → Window → Handheld → Orientation (this writes to project.godot). Both must match.
+
+### main_scene.tscn corruption repaired
+- File had 83 lines with duplicate node block appended (NotesTab, StatsTab, TaskListView duplicated after ExitButton).
+- Stripped with `replace_string_in_file`. Now 56 lines, each node appears exactly once.
+- Root cause: Godot editor re-appended nodes on scene save. Mitigation: verify line count after any tscn edit.
+
+### FAB repositioned to bottom-center
+- Was: bottom-right, 20px from edge (hidden behind nav bar on Galaxy A13).
+- Now: bottom-center, anchored at `anchor_left=0.5 anchor_right=0.5`, `offset_bottom=-140` (above nav bar).
+- Size increased to 88×68px for easier touch target.
+
+### Tab container lowered 56px
+- `TabContainer` in main_scene.tscn gets `offset_top=56.0` so tab bar clears status bar + exit button.
+
+### Font sizes increased
+- TaskRow TitleLabel: 16 → 22px
+- TaskRow DeadlineLabel: 13 → 17px
+- GroupSection GroupLabel: 14 → 20px
+- GroupSection CountLabel: 13 → 17px
+- GroupSection ChevronLabel: 14 → 20px
+- TaskRow min-height: 56 → 72px
+
+### Scroll fixed
+- **Problem**: Task list was not scrollable on device. Vertical drags were silently consumed by `TaskRow._gui_input` (swipe handler) before reaching `ScrollContainer`.
+- **Fix**: Added early `return` in `_gui_input` when `abs(delta_y) > abs(delta_x)` — vertical drags fall through to parent. `accept_event()` only called on confirmed horizontal swipe completion.
+- `ScrollContainer` shortened: `offset_bottom=-140` so it ends above FAB (no overlap).
+- `scroll_deadzone=30` added to give input system tolerance before committing to axis.
+
