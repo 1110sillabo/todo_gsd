@@ -42,11 +42,15 @@ func _gui_input(event: InputEvent) -> void:
 	elif (event is InputEventScreenDrag or event is InputEventMouseMotion) and _swipe_start != Vector2.ZERO:
 		var delta_x: float = event.position.x - _swipe_start.x
 		var delta_y: float = event.position.y - _swipe_start.y
+		# Vertical drag — do NOT consume the event so ScrollContainer can scroll
+		if abs(delta_y) > abs(delta_x):
+			return
 		if abs(delta_x) > SWIPE_THRESHOLD / 2:
 			_is_drag = true
 		if abs(delta_x) > SWIPE_THRESHOLD and abs(delta_x) > abs(delta_y) * 1.5:
 			_swipe_start = Vector2.ZERO
 			_is_drag = false
+			accept_event()
 			if delta_x > 0:
 				task_completed.emit(task)
 			else:

@@ -12,6 +12,8 @@ script = ExtResource("1_task_list_view")
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -140.0
+scroll_deadzone = 30
 
 [node name="TaskListVBox" type="VBoxContainer" parent="ScrollContainer"]
 size_flags_horizontal = 3
