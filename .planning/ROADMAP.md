@@ -1,16 +1,24 @@
-## ROADMAP.md draft
-- **Phase 1**: Persistence Foundation (Resource definitions & .tres Saving/Loading).
-  **Goal:** Build data schema and persistence layer for the 3-Box architecture.
-  **Plans:** 2 plans
+## ROADMAP.md
+- **Phase 1**: Data Layer (Resource definitions & Persistence).
+  **Goal:** Clean data schema for Tasks and Notes with robust persistence.
+  **Plans:** 3 plans
   Plans:
   - [x] 01-01-01-SUMMARY.md — TaskResource data model & GdUnit4 setup
   - [x] 01-01-02-SUMMARY.md — PersistenceManager (Save/Load with .tres)
-- **Phase 2**: TaskBox (Visual GraphEdit implementation).
-  **Goal:** Create a visual, node-based task dashboard using Godot's GraphEdit.
-  **Plans:** 2 plans
-  Plans:
-  - [ ] 02-01-PLAN.md — TaskNode and TaskBox scenes implementation
-  - [ ] 02-02-PLAN.md — UI Integration Tests for TaskBox
-- **Phase 3**: BlogBox (Rich text & Markdown export).
-- **Phase 4**: DecisionBox (Log framework & CSV export).
-- **Phase 5**: Mobile UI/UX Pass & Export testing.
+  - [ ] 01-03-PLAN.md — Data layer patch: remove graph_position, add NoteResource, fix persistence bugs
+
+- **Phase 2**: Task List UI.
+  **Goal:** Mobile-first tab bar + grouped task list (Expired/Todo/Completed) with collapse/expand and row add/complete/delete.
+  **Plans:** TBD
+
+- **Phase 3**: Task Editing.
+  **Goal:** Inline title edit, calendar date picker for deadline, drag-to-reorder rows.
+  **Plans:** TBD
+
+- **Phase 4**: Notes UI.
+  **Goal:** Notes tab with scrollable list + tap-to-open full-screen text editor.
+  **Plans:** TBD
+
+- **Phase 5**: App Shell & Export.
+  **Goal:** 3-dot menu (Send JSON stub, Stats stub, Quit), mobile polish, Android export test.
+  **Plans:** TBD

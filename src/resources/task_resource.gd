@@ -11,7 +11,6 @@ signal completed(task: TaskResource)
 @export var completed_at: int = 0
 @export var reschedule_count: int = 0
 @export var tags: Array[String] = []
-@export var graph_position: Vector2 = Vector2.ZERO
 
 func _init() -> void:
 	if created_at == 0:
