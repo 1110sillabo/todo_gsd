@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://task_list_view"]
+[gd_scene load_steps=3 format=3 uid="uid://task_list_view"]
 
 [ext_resource type="Script" path="res://src/ui/task_list_view.gd" id="1_task_list_view"]
 [ext_resource type="PackedScene" path="res://src/ui/group_section.tscn" id="2_group_section"]
@@ -16,17 +16,11 @@ anchor_bottom = 1.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="GroupSection_Expired" type="Control" parent="ScrollContainer/TaskListVBox"]
-size_flags_horizontal = 3
-instance = ExtResource("2_group_section")
+[node name="GroupSection_Expired" parent="ScrollContainer/TaskListVBox" instance=ExtResource("2_group_section")]
 
-[node name="GroupSection_Todo" type="Control" parent="ScrollContainer/TaskListVBox"]
-size_flags_horizontal = 3
-instance = ExtResource("2_group_section")
+[node name="GroupSection_Todo" parent="ScrollContainer/TaskListVBox" instance=ExtResource("2_group_section")]
 
-[node name="GroupSection_Completed" type="Control" parent="ScrollContainer/TaskListVBox"]
-size_flags_horizontal = 3
-instance = ExtResource("2_group_section")
+[node name="GroupSection_Completed" parent="ScrollContainer/TaskListVBox" instance=ExtResource("2_group_section")]
 
 [node name="FABButton" type="Button" parent="."]
 layout_mode = 1
