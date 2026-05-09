@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://group_section"]
+
+[ext_resource type="Script" path="res://src/ui/group_section.gd" id="1_group_section"]
+
+[node name="GroupSection" type="VBoxContainer"]
+anchor_right = 1.0
+size_flags_horizontal = 3
+script = ExtResource("1_group_section")
+
+[node name="HeaderPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(0, 48)
+size_flags_horizontal = 3
+
+[node name="HeaderHBox" type="HBoxContainer" parent="HeaderPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 8
+
+[node name="GroupLabel" type="Label" parent="HeaderPanel/HeaderHBox"]
+size_flags_vertical = 4
+text = "Group"
+theme_override_font_sizes/font_size = 14
+
+[node name="CountLabel" type="Label" parent="HeaderPanel/HeaderHBox"]
+size_flags_vertical = 4
+text = "(0)"
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.55, 0.55, 0.6, 1)
+
+[node name="Spacer" type="Control" parent="HeaderPanel/HeaderHBox"]
+size_flags_horizontal = 3
+
+[node name="ChevronLabel" type="Label" parent="HeaderPanel/HeaderHBox"]
+size_flags_vertical = 4
+text = "▾"
+theme_override_font_sizes/font_size = 14
+
+[node name="ItemsContainer" type="VBoxContainer" parent="."]
+size_flags_horizontal = 3
