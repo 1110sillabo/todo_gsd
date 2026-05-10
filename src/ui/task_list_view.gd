@@ -10,6 +10,7 @@ var _editing_task_id: String = ""
 var _is_new_task: bool = false
 
 func _ready() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	group_expired.setup("Scadute", Color(0.85, 0.25, 0.18), true)
 	group_todo.setup("Da fare", Color(0.22, 0.50, 0.90), true)
 	group_completed.setup("Completate", Color(0.25, 0.72, 0.45), false)
