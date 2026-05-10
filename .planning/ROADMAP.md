@@ -32,7 +32,12 @@ Plans:
 ### Phase 4: Notes UI
 **Goal:** Notes tab with scrollable list + tap-to-open full-screen text editor.
 **Requirements:** R05, R06, R07, R10
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — NoteRow component with tap detection
+- [ ] 04-02-PLAN.md — NoteEditDialog with title/content fields
+- [ ] 04-03-PLAN.md — NotesListView integration and wiring
 
 ### Phase 5: App Shell & Export
 **Goal:** 3-dot menu (Send JSON stub, Stats stub, Quit), mobile polish, Android export test.
