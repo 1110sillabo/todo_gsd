@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://bf1jx7bdkmmhy"]
 
-[ext_resource type="Script" path="res://src/ui/task_box.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bpdnawocae60o" path="res://src/ui/task_box.gd" id="1_script"]
 
-[node name="TaskBox" type="GraphEdit"]
+[node name="TaskBox" type="GraphEdit" unique_id=2112105483]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,7 +11,7 @@ grow_vertical = 2
 right_disconnects = true
 script = ExtResource("1_script")
 
-[node name="AddButton" type="Button" parent="."]
+[node name="AddButton" type="Button" parent="." unique_id=564116231]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
