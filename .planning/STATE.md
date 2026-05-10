@@ -33,3 +33,9 @@
 2. Fine-tune FAB/font sizes if needed
 3. Start Phase 4: Notes UI
 
+## Accumulated Context
+
+### Pending Todos
+- [1] Center task add button and ensure view scrolling (ui)
+
+
