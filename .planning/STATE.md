@@ -4,7 +4,7 @@
 - Phase 1 complete (persistence + data layer)
 - Phase 2 complete (TaskList UI, GroupSection, TaskRow, swipe gestures)
 - Phase 3 complete (EditTaskDialog, tap-to-edit, SpinBox date picker, GdUnit4 tests)
-- Phase 4 not started (Notes UI)
+- Phase 4 complete (Notes UI - scrollable list + modal editor)
 - Phase 5 in progress — Android export + mobile polish done ad-hoc (see 05-app-shell-export/05-00-ADHOC.md)
 
 ## Current Blockers
