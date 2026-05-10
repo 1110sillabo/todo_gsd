@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://note_row"]
+
+[ext_resource type="Script" path="res://src/ui/note_row.gd" id="1_note_row"]
+
+[node name="NoteRow" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 60)
+anchor_right = 1.0
+size_flags_horizontal = 3
+script = ExtResource("1_note_row")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="TitleLabel" type="Label" parent="MarginContainer"]
+layout_mode = 2
+text = "Note title"
+theme_override_font_sizes/font_size = 20
+vertical_alignment = 1

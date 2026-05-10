@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://src/ui/main_scene.gd" id="1_main_scene"]
 [ext_resource type="PackedScene" path="res://src/ui/task_list_view.tscn" id="2_task_list_view"]
+[ext_resource type="PackedScene" path="res://src/ui/notes_list_view.tscn" id="3_notes_list_view"]
 
 [node name="MainScene" type="Control"]
 anchor_right = 1.0
@@ -25,12 +26,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 metadata/_tab_name = "Note"
 
-[node name="PlaceholderNotes" type="Label" parent="TabContainer/NotesTab"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "In arrivo…"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="NotesListView" parent="TabContainer/NotesTab" instance=ExtResource("3_notes_list_view")]
 
 [node name="StatsTab" type="Control" parent="TabContainer"]
 anchor_right = 1.0
