@@ -225,6 +225,92 @@ elif task.deadline > 0:
 
 ---
 
+## 8. Controlling the scrollbar width
+
+**Symptom:** The vertical scrollbar on the right is a thin sliver — hard to see and impossible to grab on a touchscreen.
+
+**Root cause:** Godot's `ScrollContainer` creates a `VScrollBar` internally as an unnamed child node. Its width is not exposed as a direct property on `ScrollContainer` itself — you have to reach into the scrollbar node.
+
+**Why you can't find it in the Inspector:** Selecting the `ScrollContainer` in the Scene panel shows its own properties, not the internal `VScrollBar` child. The scrollbar isn't listed in the scene tree either — Godot creates it at runtime.
+
+**Fix — code (simplest, recommended):**
+
+In the script attached to the scene that contains the `ScrollContainer`, call `get_v_scroll_bar()` in `_ready()`:
+
+```gdscript
+func _ready() -> void:
+    $ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
+```
+
+`14` is a good mobile value — visible without being intrusive. Default is ~8px. Try `20`+ if you want a thick grabbable bar.
+
+`custom_minimum_size.x` sets the *minimum* width. Godot won't render it thinner than this value regardless of the theme.
+
+**Fix — theme (global, applies to all ScrollContainers):**
+
+If you want to set it once for the whole project instead of per-scene:
+
+1. **Project → Project Settings → General → GUI → Theme → Custom** → create or assign a Theme resource
+2. Or: select any node → **Inspector → Theme** → **New Theme** → save as `res://theme.tres`
+3. In the **Theme editor** (bottom panel): click **Add Type** → search `VScrollBar` → Add
+4. Under VScrollBar: **Add Theme Item → Constants → `minimum_width`** (Godot 4.3+) or set a custom `StyleBox` for the grabber area to be wider
+5. Apply the theme to the root node of your main scene (it cascades down to all children)
+
+**In the Godot editor (finding the VScrollBar at runtime):**
+
+You can inspect the internal scrollbar while the game is running:
+1. Run the project (F5 or the Play button)
+2. **Scene → Remote** (top of Scene panel, switch from "Local" to "Remote")
+3. Navigate the live tree — you'll see `VScrollBar` appear as a child of `ScrollContainer`
+4. Click it → **Inspector → Custom Minimum Size → x** → adjust live
+
+This remote inspector trick is useful any time you need to inspect nodes that are created at runtime and don't appear in the static scene tree.
+
+---
+
+## 9. Section header toggle: expand works but collapse doesn't
+
+**Symptom:** Tapping a collapsible section header expands it fine, but tapping again to collapse does nothing (or is unreliable) on Android.
+
+**Root cause:** The `gui_input` signal on a `PanelContainer` header is fragile when children are present. Godot routes touch events to the deepest child whose rect contains the touch point. When the section is *collapsed*, there are no child nodes in `ItemsContainer`, so the event propagates cleanly up to `HeaderPanel`. When *expanded*, `TaskRow` nodes (which extend `PanelContainer` with `mouse_filter = STOP`) are in the tree. Even though they're laid out *below* the header in a VBoxContainer, Godot's internal routing can sometimes eat the event before it bubbles back up to `HeaderPanel`, making the `gui_input` signal unreliable for collapsing.
+
+**Why `gui_input` signal is fragile here:**
+- `gui_input` on a node fires only when Godot's routing decides that node should receive the event
+- Children inside `HeaderPanel` (like `HBoxContainer`) also have `mouse_filter = STOP` by default
+- The routing path changes depending on which children are visible in the scene tree
+
+**Fix — use `_input()` with a manual rect check:**
+
+Instead of connecting to `$HeaderPanel.gui_input`, override `_input()` in the GroupSection script. `_input()` fires for **every** input event before any Control routing — you then manually check if the touch lands in the header's rect:
+
+```gdscript
+func _ready() -> void:
+    set_process_input(true)
+
+func _input(event: InputEvent) -> void:
+    if not is_visible_in_tree():
+        return
+    var pressed := false
+    if event is InputEventScreenTouch and event.pressed:
+        pressed = true
+    elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+        pressed = true
+    if pressed and $HeaderPanel.get_global_rect().has_point(event.position):
+        get_viewport().set_input_as_handled()
+        _toggle_expanded()
+```
+
+Key points:
+- `get_global_rect()` returns the header's actual screen rect — works correctly regardless of scroll position or what children are visible
+- `get_viewport().set_input_as_handled()` is the `_input()` equivalent of `accept_event()` — prevents the event from reaching any Control's `_gui_input`
+- `set_process_input(true)` is implicit once you define `_input()`, but explicit is clearer
+
+**When all three GroupSection instances call `_input()`:** Each instance checks `$HeaderPanel.get_global_rect().has_point(event.position)`. Only the one whose header was actually tapped will match — the others return immediately. The rect check is cheap.
+
+**General rule:** Prefer `_input()` + `get_global_rect().has_point()` over `gui_input` signal for tap targets whose children change dynamically. The signal approach is fine for static scenes but becomes unpredictable when the scene tree changes at runtime.
+
+---
+
 ## General Patterns
 
 ### `mouse_filter` values

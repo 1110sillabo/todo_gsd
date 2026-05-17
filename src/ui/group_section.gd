@@ -12,7 +12,22 @@ var _accent_color: Color = Color.WHITE
 var _tasks: Array[TaskResource] = []
 
 func _ready() -> void:
-	$HeaderPanel.gui_input.connect(_on_header_gui_input)
+	set_process_input(true)
+
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree():
+		return
+	var pressed := false
+	if event is InputEventScreenTouch and event.pressed:
+		pressed = true
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		pressed = true
+	if pressed and $HeaderPanel.get_global_rect().has_point(event.position):
+		get_viewport().set_input_as_handled()
+		_toggle_expanded()
+
+func _on_header_gui_input(_event: InputEvent) -> void:
+	pass  # replaced by _input()
 
 func setup(label: String, accent_color: Color, starts_expanded: bool) -> void:
 	$HeaderPanel/HeaderHBox/GroupLabel.text = label
@@ -35,14 +50,6 @@ func _update_chevron() -> void:
 
 func _update_count() -> void:
 	$HeaderPanel/HeaderHBox/CountLabel.text = "(%d)" % _tasks.size()
-
-func _on_header_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		accept_event()
-		_toggle_expanded()
-	elif event is InputEventScreenTouch and event.pressed:
-		accept_event()
-		_toggle_expanded()
 
 func _toggle_expanded() -> void:
 	_expanded = !_expanded

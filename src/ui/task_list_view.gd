@@ -11,6 +11,7 @@ var _is_new_task: bool = false
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	$ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
 	group_expired.setup("Scadute", Color(0.85, 0.25, 0.18), true)
 	group_todo.setup("Da fare", Color(0.22, 0.50, 0.90), true)
 	group_completed.setup("Completate", Color(0.25, 0.72, 0.45), false)
@@ -38,18 +39,26 @@ func _load_tasks() -> void:
 	group_completed.clear()
 	var now := int(Time.get_unix_time_from_system())
 	var todo_tasks: Array[TaskResource] = []
+	var expired_tasks: Array[TaskResource] = []
+	var completed_tasks: Array[TaskResource] = []
 	for filename in PersistenceManager.list_tasks():
 		var task := PersistenceManager.load_task(filename)
 		if task == null:
 			continue
 		match categorize(task, now):
 			"completed":
-				group_completed.add_task(task)
+				completed_tasks.append(task)
 			"expired":
-				group_expired.add_task(task)
+				expired_tasks.append(task)
 			_:
 				todo_tasks.append(task)
-	# Sort Da fare by closest deadline first; tasks with no deadline go last
+	# Scadute: oldest deadline first (ascending)
+	expired_tasks.sort_custom(func(a: TaskResource, b: TaskResource) -> bool:
+		return a.deadline < b.deadline
+	)
+	for task in expired_tasks:
+		group_expired.add_task(task)
+	# Da fare: closest deadline first; no-deadline tasks go last
 	todo_tasks.sort_custom(func(a: TaskResource, b: TaskResource) -> bool:
 		if a.deadline == 0 and b.deadline == 0:
 			return false
@@ -61,6 +70,12 @@ func _load_tasks() -> void:
 	)
 	for task in todo_tasks:
 		group_todo.add_task(task)
+	# Completate: most recent completion first (descending)
+	completed_tasks.sort_custom(func(a: TaskResource, b: TaskResource) -> bool:
+		return a.completed_at > b.completed_at
+	)
+	for task in completed_tasks:
+		group_completed.add_task(task)
 
 static func categorize(task: TaskResource, now: int = 0) -> String:
 	if now == 0:
