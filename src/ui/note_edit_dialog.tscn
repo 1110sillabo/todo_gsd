@@ -4,7 +4,7 @@
 
 [node name="NoteEditDialog" type="AcceptDialog"]
 title = "Edit Note"
-size = Vector2i(350, 450)
+size = Vector2i(390, 380)
 visible = true
 ok_button_text = "Salva"
 script = ExtResource("1_note_edit_dialog")
@@ -28,7 +28,8 @@ layout_mode = 2
 text = "Contenuto"
 
 [node name="ContentEdit" type="TextEdit" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 300)
+custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
+size_flags_vertical = 3
 placeholder_text = "Inserisci contenuto..."
 wrap_mode = 1

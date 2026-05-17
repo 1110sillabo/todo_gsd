@@ -19,7 +19,8 @@ func show_for_note(note: NoteResource, window_title: String = "Modifica Nota") -
 	title_edit.text = note.title
 	content_edit.text = note.content
 	_on_title_changed(note.title)
-	popup_centered()
+	# Open near the top so the virtual keyboard doesn't cover it
+	popup(Rect2i(Vector2i(5, 40), Vector2i(390, 380)))
 
 func _on_title_changed(new_text: String) -> void:
 	get_ok_button().disabled = new_text.strip_edges().is_empty()

@@ -15,7 +15,12 @@ func set_task(value: TaskResource) -> void:
 	if not is_inside_tree():
 		await ready
 	$MarginContainer/VBoxContainer/TitleLabel.text = task.title
-	if task.deadline > 0:
+	if task.completed_at > 0:
+		var dt := Time.get_datetime_dict_from_unix_time(task.completed_at)
+		$MarginContainer/VBoxContainer/DeadlineLabel.text = "✓ %02d/%02d/%04d" % [dt.day, dt.month, dt.year]
+		$MarginContainer/VBoxContainer/DeadlineLabel.visible = true
+		$MarginContainer/VBoxContainer/DeadlineLabel.add_theme_color_override("font_color", Color(0.4, 0.8, 0.4, 1.0))
+	elif task.deadline > 0:
 		var now := int(Time.get_unix_time_from_system())
 		var dt := Time.get_datetime_dict_from_unix_time(task.deadline)
 		$MarginContainer/VBoxContainer/DeadlineLabel.text = "%02d/%02d/%04d" % [dt.day, dt.month, dt.year]

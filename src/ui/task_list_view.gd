@@ -37,6 +37,7 @@ func _load_tasks() -> void:
 	group_todo.clear()
 	group_completed.clear()
 	var now := int(Time.get_unix_time_from_system())
+	var todo_tasks: Array[TaskResource] = []
 	for filename in PersistenceManager.list_tasks():
 		var task := PersistenceManager.load_task(filename)
 		if task == null:
@@ -47,7 +48,19 @@ func _load_tasks() -> void:
 			"expired":
 				group_expired.add_task(task)
 			_:
-				group_todo.add_task(task)
+				todo_tasks.append(task)
+	# Sort Da fare by closest deadline first; tasks with no deadline go last
+	todo_tasks.sort_custom(func(a: TaskResource, b: TaskResource) -> bool:
+		if a.deadline == 0 and b.deadline == 0:
+			return false
+		if a.deadline == 0:
+			return false
+		if b.deadline == 0:
+			return true
+		return a.deadline < b.deadline
+	)
+	for task in todo_tasks:
+		group_todo.add_task(task)
 
 static func categorize(task: TaskResource, now: int = 0) -> String:
 	if now == 0:

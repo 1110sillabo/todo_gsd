@@ -38,8 +38,10 @@ func _update_count() -> void:
 
 func _on_header_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		accept_event()
 		_toggle_expanded()
 	elif event is InputEventScreenTouch and event.pressed:
+		accept_event()
 		_toggle_expanded()
 
 func _toggle_expanded() -> void:

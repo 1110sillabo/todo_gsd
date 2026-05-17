@@ -13,6 +13,7 @@ script = ExtResource("1_main_scene")
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 56.0
+theme_override_font_sizes/font_size = 18
 
 [node name="TasksTab" type="Control" parent="TabContainer"]
 anchor_right = 1.0

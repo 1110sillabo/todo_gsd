@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://task_list_view"]
+[gd_scene format=3 uid="uid://o2m4kuwihcle"]
 
-[ext_resource type="Script" path="res://src/ui/task_list_view.gd" id="1_task_list_view"]
+[ext_resource type="Script" uid="uid://c7erdphsgxwcd" path="res://src/ui/task_list_view.gd" id="1_task_list_view"]
 [ext_resource type="PackedScene" path="res://src/ui/group_section.tscn" id="2_group_section"]
 [ext_resource type="PackedScene" path="res://src/ui/task_edit_dialog.tscn" id="3_editdialog"]
 
-[node name="TaskListView" type="Control"]
+[node name="TaskListView" type="Control" unique_id=126061661]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,7 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_task_list_view")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=852379163]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,22 +23,24 @@ grow_horizontal = 2
 grow_vertical = 2
 scroll_deadzone = 30
 
-[node name="TaskListVBox" type="VBoxContainer" parent="ScrollContainer"]
+[node name="TaskListVBox" type="VBoxContainer" parent="ScrollContainer" unique_id=456707821]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 4
 
-[node name="GroupSection_Expired" parent="ScrollContainer/TaskListVBox" instance=ExtResource("2_group_section")]
+[node name="GroupSection_Expired" parent="ScrollContainer/TaskListVBox" unique_id=1288924383 instance=ExtResource("2_group_section")]
 layout_mode = 2
 
-[node name="GroupSection_Todo" parent="ScrollContainer/TaskListVBox" instance=ExtResource("2_group_section")]
+[node name="GroupSection_Todo" parent="ScrollContainer/TaskListVBox" unique_id=1729791813 instance=ExtResource("2_group_section")]
 layout_mode = 2
 
-[node name="GroupSection_Completed" parent="ScrollContainer/TaskListVBox" instance=ExtResource("2_group_section")]
+[node name="GroupSection_Completed" parent="ScrollContainer/TaskListVBox" unique_id=1511570928 instance=ExtResource("2_group_section")]
 layout_mode = 2
 
-[node name="FABButton" type="Button" parent="."]
+[node name="FABButton" type="Button" parent="." unique_id=70243089]
+z_index = 1
+custom_minimum_size = Vector2(88, 68)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -51,8 +53,9 @@ offset_right = 44.0
 offset_bottom = 34.0
 grow_horizontal = 2
 grow_vertical = 2
-custom_minimum_size = Vector2(88, 68)
-z_index = 1
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0.16936749, 0.25926113, 0.5463618, 0.92941177)
 text = "+"
 
-[node name="TaskEditDialog" parent="." instance=ExtResource("3_editdialog")]
+[node name="TaskEditDialog" parent="." unique_id=2138459725 instance=ExtResource("3_editdialog")]
+size = Vector2i(380, 340)

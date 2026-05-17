@@ -8,7 +8,7 @@ size_flags_horizontal = 3
 script = ExtResource("1_group_section")
 
 [node name="HeaderPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 56)
 size_flags_horizontal = 3
 
 [node name="HeaderHBox" type="HBoxContainer" parent="HeaderPanel"]

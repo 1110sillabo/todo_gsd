@@ -33,6 +33,7 @@ size_flags_vertical = 4
 size_flags_horizontal = 3
 text = "Task title"
 theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
 
 [node name="DeadlineLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 size_flags_horizontal = 3
