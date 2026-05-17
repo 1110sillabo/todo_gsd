@@ -1,0 +1,8 @@
+- [ ] If I scroll a list using finger gesture from button to top, it does not scroll vertically. (FAB mouse_filter investigation pending)
+- [x] sidebar of the main container should be bigger (scrollbar width set to 14px in all scroll views)
+- [x] collapsing or expanding sections should be easier (transparent Button overlay on header — needs device test)
+- [x] da fare notes should wrap if the text is longer than the text container area (autowrap_mode=3)
+- [ ] notes text should scroll vertically. Now it cannot. (pending investigation)
+- [x] task titolo should wrap instead of going horizontally on forever (autowrap_mode=3)
+- [x] I want to save completion date for tasks (completed_at field, shown in green in Completate section)
+- [x] da fare should be ordered. Most urgent first. (sorted ascending by deadline)

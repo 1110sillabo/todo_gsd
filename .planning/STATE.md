@@ -6,12 +6,15 @@
 - Phase 3 complete (EditTaskDialog, tap-to-edit, SpinBox date picker, GdUnit4 tests)
 - Phase 4 complete (Notes UI — scrollable list + modal editor + FAB, verified on device)
 - Phase 5 in progress — Android export + mobile polish done ad-hoc (see 05-app-shell-export/05-00-ADHOC.md)
+- Phase 6 ad-hoc work complete (UI polish, sorting, section toggle, Liste tab) — needs APK test
 
 ## Current Blockers
 - None.
 
 ## Pending Verification
-- None outstanding. FAB position verified on Galaxy A13 for both Tasks and Notes tabs.
+- Liste tab: create list, add items, toggle strikethrough, swipe-delete items, back nav, swipe-delete list — needs device test
+- Section header collapse/expand (transparent Button overlay) — needs device test
+- Scadute/Completate sort order — needs device test
 
 ## Decisions (locked)
 - Deadline always required; SpinBox DD/MM/YYYY picker (no text field, no checkbox)
@@ -34,6 +37,19 @@
 **Pattern:** Any time a scene is re-anchored after already being instanced in a parent, the parent scene file must be updated too.
 
 ## Next Session
-1. Export APK and run full smoke-test on device (Tasks + Notes tabs, FAB, edit dialogs)
-2. Plan Phase 5: 3-dot menu + stats + JSON export stub
+1. Build APK and smoke-test on Galaxy A13: Tasks (sort + collapse), Notes, Liste tab
+2. Fix orientation in export_presets.cfg if not set: add `screen/orientation=1` after `screen/immersive_mode=true` in `[preset.0.options]`
+3. Investigate FAB scroll issue — finger swipe starting from near FAB doesn't scroll (mouse_filter=IGNORE on FAB may block scroll; try mouse_filter=PASS instead)
+4. Investigate note content vertical scroll in NoteEditDialog
+
+## Roadmap Evolution
+- Phase 6 added: UI Polish & Bug Fixes (2026-05-17)
+
+## Session 2 Summary (2026-05-17)
+- Scadute section: sorted ascending by deadline (oldest overdue first)
+- Completate section: sorted descending by completed_at (most recent first)
+- GroupSection header: replaced `_input()` rect-check with transparent Button overlay (`HeaderTapArea`); removed chevron icon
+- Liste tab added: ListResource + ListItemResource data model, full CRUD UI (lists-of-lists + detail view), strikethrough toggle via RichTextLabel BBCode
+- notes_list_view.gd: scrollbar width set to 14px
+- LEARNING_GODOT.md: sections 8 (scrollbar width), 9 (section toggle _input), 10 (transparent Button overlay)
 
