@@ -4,5 +4,5 @@ extends Control
 @onready var exit_button: Button = $ExitButton
 
 func _ready() -> void:
-	tab_container.set_tab_disabled(2, true)
+	tab_container.set_tab_disabled(3, true)
 	exit_button.pressed.connect(func(): get_tree().quit())

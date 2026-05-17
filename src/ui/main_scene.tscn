@@ -1,8 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=4 format=3 uid="uid://main_scene"]
 
 [ext_resource type="Script" path="res://src/ui/main_scene.gd" id="1_main_scene"]
 [ext_resource type="PackedScene" path="res://src/ui/task_list_view.tscn" id="2_task_list_view"]
 [ext_resource type="PackedScene" path="res://src/ui/notes_list_view.tscn" id="3_notes_list_view"]
+[ext_resource type="PackedScene" path="res://src/ui/lists_list_view.tscn" id="4_lists_list_view"]
 
 [node name="MainScene" type="Control"]
 anchor_right = 1.0
@@ -34,6 +35,19 @@ anchor_bottom = 1.0
 metadata/_tab_name = "Note"
 
 [node name="NotesListView" parent="TabContainer/NotesTab" instance=ExtResource("3_notes_list_view")]
+
+[node name="ListeTab" type="Control" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+metadata/_tab_name = "Liste"
+
+[node name="ListsListView" parent="TabContainer/ListeTab" instance=ExtResource("4_lists_list_view")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="StatsTab" type="Control" parent="TabContainer"]
 anchor_right = 1.0

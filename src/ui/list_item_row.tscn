@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=3 uid="uid://list_item_row"]
+
+[ext_resource type="Script" path="res://src/ui/list_item_row.gd" id="1_list_item_row"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.1, 0.1, 0.12, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ListItemRow" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 56)
+anchor_right = 1.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+script = ExtResource("1_list_item_row")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="TitleLabel" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+theme_override_font_sizes/normal_font_size = 20
+text = "Item"
