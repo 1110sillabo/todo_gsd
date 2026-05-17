@@ -12,29 +12,13 @@ var _accent_color: Color = Color.WHITE
 var _tasks: Array[TaskResource] = []
 
 func _ready() -> void:
-	set_process_input(true)
-
-func _input(event: InputEvent) -> void:
-	if not is_visible_in_tree():
-		return
-	var pressed := false
-	if event is InputEventScreenTouch and event.pressed:
-		pressed = true
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		pressed = true
-	if pressed and $HeaderPanel.get_global_rect().has_point(event.position):
-		get_viewport().set_input_as_handled()
-		_toggle_expanded()
-
-func _on_header_gui_input(_event: InputEvent) -> void:
-	pass  # replaced by _input()
+	$HeaderPanel/HeaderTapArea.pressed.connect(_toggle_expanded)
 
 func setup(label: String, accent_color: Color, starts_expanded: bool) -> void:
 	$HeaderPanel/HeaderHBox/GroupLabel.text = label
 	_accent_color = accent_color
 	_expanded = starts_expanded
 	$ItemsContainer.visible = starts_expanded
-	_update_chevron()
 	_apply_accent_style()
 
 func _apply_accent_style() -> void:
@@ -45,16 +29,12 @@ func _apply_accent_style() -> void:
 	style.set_corner_radius_all(2)
 	$HeaderPanel.add_theme_stylebox_override("panel", style)
 
-func _update_chevron() -> void:
-	$HeaderPanel/HeaderHBox/ChevronLabel.text = "▾" if _expanded else "▸"
-
 func _update_count() -> void:
 	$HeaderPanel/HeaderHBox/CountLabel.text = "(%d)" % _tasks.size()
 
 func _toggle_expanded() -> void:
 	_expanded = !_expanded
 	$ItemsContainer.visible = _expanded
-	_update_chevron()
 
 func add_task(task: TaskResource) -> void:
 	_tasks.append(task)

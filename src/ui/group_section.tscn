@@ -30,10 +30,13 @@ theme_override_colors/font_color = Color(0.55, 0.55, 0.6, 1)
 [node name="Spacer" type="Control" parent="HeaderPanel/HeaderHBox"]
 size_flags_horizontal = 3
 
-[node name="ChevronLabel" type="Label" parent="HeaderPanel/HeaderHBox"]
-size_flags_vertical = 4
-text = "▾"
-theme_override_font_sizes/font_size = 20
+[node name="HeaderTapArea" type="Button" parent="HeaderPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+flat = true
+focus_mode = 0
 
 [node name="ItemsContainer" type="VBoxContainer" parent="."]
 size_flags_horizontal = 3

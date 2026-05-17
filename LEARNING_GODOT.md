@@ -311,6 +311,86 @@ Key points:
 
 ---
 
+## 10. Section header collapse still unreliable on mobile — transparent Button overlay
+
+**Symptom:** Even after switching from `gui_input` signal to `_input()` + `get_global_rect().has_point()` (Section 9), collapsing the section header is still unreliable on Android. Expanding seems to work; collapsing does not, or requires multiple taps.
+
+**Why the `_input()` approach can still fail:**
+
+`_input()` fires on all nodes that called `set_process_input(true)`, in **scene-tree order — children before parents**. All three `GroupSection` instances and every `TaskRow` inside them may all be processing the same `InputEventScreenTouch`. A TaskRow that internally calls `get_viewport().set_input_as_handled()` for swipe detection will prevent the parent GroupSection's `_input()` from ever firing.
+
+Additionally, Godot's `_input()` ordering on Android can deviate from desktop behavior when the OS batches touch events, making the order of execution non-deterministic.
+
+**Root issue:** Custom `_input()` with rect checks is inherently fragile on mobile because it races against child nodes and Android's batched event delivery. Godot's native `Button` widget avoids all of this — it uses internal, engine-level press detection that is guaranteed to fire before child `_gui_input` callbacks, and it correctly tracks touch-start + touch-end within the same button rect.
+
+**Fix — transparent Button overlay:**
+
+The approach: leave the visual structure (`HeaderPanel`, `HeaderHBox`, labels) exactly as-is, and add a `Button` as the **last child** of `HeaderPanel`. Being last = renders on top. With `flat = true` and full-rect anchors it is completely invisible, but it captures every tap on the header first.
+
+**In `group_section.tscn`:**
+
+Remove `ChevronLabel` (no longer needed — the whole header is the tap target):
+
+```
+# Remove this node entirely:
+# [node name="ChevronLabel" type="Label" parent="HeaderPanel/HeaderHBox"]
+```
+
+Add a transparent tap-capture Button as the last child of `HeaderPanel`:
+
+```
+[node name="HeaderTapArea" type="Button" parent="HeaderPanel"]
+layout_mode = 1
+anchors_preset = 15
+flat = true
+focus_mode = 0
+```
+
+`anchors_preset = 15` = `PRESET_FULL_RECT` — fills the entire `HeaderPanel`. `flat = true` removes all visual styling. `focus_mode = 0` = `NONE` prevents an ugly focus border on Android.
+
+**In `group_section.gd`:**
+
+Remove `_input()`, `set_process_input(true)`, and `_on_header_gui_input`. Connect the overlay button in `_ready()`:
+
+```gdscript
+func _ready() -> void:
+    $HeaderPanel/HeaderTapArea.pressed.connect(_toggle_expanded)
+
+func _toggle_expanded() -> void:
+    _expanded = !_expanded
+    $ItemsContainer.visible = _expanded
+
+func setup(label: String, accent_color: Color, starts_expanded: bool) -> void:
+    $HeaderPanel/HeaderHBox/GroupLabel.text = label
+    _accent_color = accent_color
+    _expanded = starts_expanded
+    $ItemsContainer.visible = starts_expanded
+    _apply_accent_style()
+```
+
+No chevron, no `_update_chevron()`, no `_on_header_gui_input`. The UX remains clear: tap the section row anywhere → it toggles. Items count `(N)` still shows in `CountLabel`.
+
+**Why this works where `_input()` didn't:**
+
+| Mechanism | Priority | Blocked by children? |
+|-----------|----------|----------------------|
+| `_input()` + rect check | Low (processes after GUI routing) | Yes — any child's `set_input_as_handled()` stops it |
+| `gui_input` signal on Panel | Medium | Yes — children with `mouse_filter = STOP` grab first |
+| `Button.pressed` (last-child overlay) | High (Button is top visual element, handles its own input before siblings) | No — it's on top, nothing sits above it |
+
+The `Button` as last child is the only approach that is truly position-guaranteed: it renders above all siblings and catches the tap at the GUI routing stage, before `_input()` is called on any node.
+
+**In the Godot editor:**
+1. Open `group_section.tscn` → select `HeaderPanel` → **Add Child Node** → `Button`
+2. Rename it `HeaderTapArea`
+3. **Inspector → Flat** → on, **Focus Mode** → None
+4. **Inspector → Layout → Anchors Preset** → Full Rect
+5. Move it to the bottom of `HeaderPanel`'s children (drag in Scene panel)
+6. Delete `ChevronLabel` from `HeaderHBox`
+7. In `group_section.gd` connect in `_ready()` as above, delete `_input()` and `_on_header_gui_input`
+
+---
+
 ## General Patterns
 
 ### `mouse_filter` values
