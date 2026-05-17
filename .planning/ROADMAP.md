@@ -43,3 +43,14 @@ Plans:
 **Goal:** 3-dot menu (Send JSON stub, Stats stub, Quit), mobile polish, Android export test.
 **Requirements:** R08, R09
 **Plans:** TBD
+
+### Phase 6: UI Polish & Bug Fixes
+**Goal:** Fix 8 reported UI/UX bugs: vertical scroll from bottom, tab bar sizing, section collapse UX, text wrapping in notes and tasks, notes vertical scroll, completion date persistence, and urgency ordering in Da Fare.
+**Requirements:** R01, R02, R05, R09
+**Depends on:** Phase 4, Phase 5
+**Plans:** 3 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Fix vertical scroll (ScrollContainer deadzone + FAB filter) and tab bar height
+- [ ] 06-02-PLAN.md — Enable text wrapping on task/note titles, fix notes editor scroll, increase section header touch target
+- [ ] 06-03-PLAN.md — Sort Da fare by closest deadline first, display completion date on completed task rows
