@@ -391,6 +391,82 @@ The `Button` as last child is the only approach that is truly position-guarantee
 
 ---
 
+## 11. FAB "+" button doesn't work on mobile — mouse_filter set to Ignore
+
+**Symptom:** The floating "+" add button renders correctly but does nothing when tapped on Android. No dialog opens.
+
+**Root cause:** The FAB `Button` was given `mouse_filter = 2` (`MOUSE_FILTER_IGNORE`) to fix an earlier scrolling issue (see entry 1). This was a partial fix: `MOUSE_FILTER_IGNORE` makes the button completely invisible to input routing — scroll worked again, but the button itself became untappable.
+
+**The trade-off that was missed:** `MOUSE_FILTER_IGNORE` solves the scroll problem by passing all events through the button, but that includes the tap that should trigger `pressed`. The button never fires.
+
+**Fix — replace floating FAB with a full-width bottom button:**
+
+The floating overlay approach is inherently in conflict with the `ScrollContainer` beneath it. The simpler and more reliable pattern is to give the add button its own dedicated space outside the scroll area by placing it below the `ScrollContainer` in a `VBoxContainer`.
+
+Change the scene structure from:
+
+```
+Control (root)
+  ScrollContainer  ← full rect, offset_bottom = -140
+    TaskListVBox
+  FABButton        ← floating overlay, mouse_filter = 2
+```
+
+To:
+
+```
+Control (root)
+  VBoxContainer    ← full rect
+    ScrollContainer  ← size_flags_vertical = 3 (expand + fill)
+      TaskListVBox
+    FABButton        ← size_flags_horizontal = 3, min height 60
+```
+
+In the `.tscn`:
+
+```
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3   # expand + fill — takes all remaining space
+scroll_deadzone = 30
+
+[node name="FABButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 60)
+text = "+ Nuova attività"
+theme_override_font_sizes/font_size = 18
+```
+
+No `mouse_filter` override, no floating anchors, no `z_index`. The `VBoxContainer` naturally gives the button its own 60px row at the bottom and lets `ScrollContainer` fill everything above it.
+
+**Update `.gd` node paths** when moving nodes into a `VBoxContainer`:
+
+```gdscript
+# Before
+@onready var fab: Button = $FABButton
+$ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
+
+# After
+@onready var fab: Button = $VBoxContainer/FABButton
+$VBoxContainer/ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
+```
+
+**In the Godot editor:**
+1. Open the scene → select the root node → **Add Child** → `VBoxContainer` → set anchors to Full Rect
+2. Drag `ScrollContainer` into `VBoxContainer` → set its **Size Flags → Vertical** to **Expand + Fill**
+3. Delete the floating `FABButton` → **Add Child** to `VBoxContainer` → `Button` → set **Size Flags → Horizontal** to **Expand + Fill**, min height 60, text `"+ Nuova attività"`
+4. Remove `offset_bottom = -140` from `ScrollContainer` (no longer needed)
+5. Update `@onready` paths in the attached `.gd` script
+
+---
+
 ## General Patterns
 
 ### `mouse_filter` values

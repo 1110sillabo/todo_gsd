@@ -2,12 +2,12 @@ extends Control
 
 const NOTE_ROW_SCENE = preload("res://src/ui/note_row.tscn")
 
-@onready var notes_vbox: VBoxContainer = $ScrollContainer/NotesVBox
-@onready var fab: Button = $FABButton
+@onready var notes_vbox: VBoxContainer = $VBoxContainer/ScrollContainer/NotesVBox
+@onready var fab: Button = $VBoxContainer/FABButton
 @onready var edit_dialog: NoteEditDialog = $NoteEditDialog
 
 func _ready() -> void:
-	$ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
+	$VBoxContainer/ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
 	fab.pressed.connect(_on_fab_pressed)
 	edit_dialog.note_saved.connect(_on_note_saved)
 	_load_notes()

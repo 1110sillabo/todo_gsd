@@ -13,49 +13,41 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_task_list_view")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=852379163]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -140.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=852379163]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 scroll_deadzone = 30
 
-[node name="TaskListVBox" type="VBoxContainer" parent="ScrollContainer" unique_id=456707821]
+[node name="TaskListVBox" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=456707821]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 4
 
-[node name="GroupSection_Expired" parent="ScrollContainer/TaskListVBox" unique_id=1288924383 instance=ExtResource("2_group_section")]
+[node name="GroupSection_Expired" parent="VBoxContainer/ScrollContainer/TaskListVBox" unique_id=1288924383 instance=ExtResource("2_group_section")]
 layout_mode = 2
 
-[node name="GroupSection_Todo" parent="ScrollContainer/TaskListVBox" unique_id=1729791813 instance=ExtResource("2_group_section")]
+[node name="GroupSection_Todo" parent="VBoxContainer/ScrollContainer/TaskListVBox" unique_id=1729791813 instance=ExtResource("2_group_section")]
 layout_mode = 2
 
-[node name="GroupSection_Completed" parent="ScrollContainer/TaskListVBox" unique_id=1511570928 instance=ExtResource("2_group_section")]
+[node name="GroupSection_Completed" parent="VBoxContainer/ScrollContainer/TaskListVBox" unique_id=1511570928 instance=ExtResource("2_group_section")]
 layout_mode = 2
 
-[node name="FABButton" type="Button" parent="." unique_id=70243089]
-z_index = 1
-custom_minimum_size = Vector2(88, 68)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.667
-anchor_right = 0.5
-anchor_bottom = 0.667
-offset_left = -44.0
-offset_top = -34.0
-offset_right = 44.0
-offset_bottom = 34.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_colors/font_outline_color = Color(0.16936749, 0.25926113, 0.5463618, 0.92941177)
-text = "+"
+[node name="FABButton" type="Button" parent="VBoxContainer" unique_id=70243089]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 60)
+text = "+ Nuova attività"
+theme_override_font_sizes/font_size = 18
 
 [node name="TaskEditDialog" parent="." unique_id=2138459725 instance=ExtResource("3_editdialog")]
 size = Vector2i(380, 340)

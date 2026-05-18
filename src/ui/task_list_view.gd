@@ -1,9 +1,9 @@
 extends Control
 
-@onready var group_expired: GroupSection = $ScrollContainer/TaskListVBox/GroupSection_Expired
-@onready var group_todo: GroupSection = $ScrollContainer/TaskListVBox/GroupSection_Todo
-@onready var group_completed: GroupSection = $ScrollContainer/TaskListVBox/GroupSection_Completed
-@onready var fab: Button = $FABButton
+@onready var group_expired: GroupSection = $VBoxContainer/ScrollContainer/TaskListVBox/GroupSection_Expired
+@onready var group_todo: GroupSection = $VBoxContainer/ScrollContainer/TaskListVBox/GroupSection_Todo
+@onready var group_completed: GroupSection = $VBoxContainer/ScrollContainer/TaskListVBox/GroupSection_Completed
+@onready var fab: Button = $VBoxContainer/FABButton
 @onready var _edit_dialog: AcceptDialog = $TaskEditDialog
 
 var _editing_task_id: String = ""
@@ -11,7 +11,7 @@ var _is_new_task: bool = false
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
+	$VBoxContainer/ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
 	group_expired.setup("Scadute", Color(0.85, 0.25, 0.18), true)
 	group_todo.setup("Da fare", Color(0.22, 0.50, 0.90), true)
 	group_completed.setup("Completate", Color(0.25, 0.72, 0.45), false)
