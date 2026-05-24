@@ -108,6 +108,10 @@ func _export_json() -> void:
 	file.store_string(JSON.stringify(payload, "\t"))
 	file.close()
 
+	# --- Open file with system chooser (Android: triggers "Open with / Share" dialog) ---
+	if OS.has_feature("android"):
+		OS.shell_open(path)
+
 	# --- Confirm ---
 	_show_dialog("Salvato in " + label)
 
