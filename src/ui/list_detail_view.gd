@@ -13,6 +13,7 @@ const LIST_ITEM_ROW_SCENE = preload("res://src/ui/list_item_row.tscn")
 var _current_list: ListResource = null
 
 func _ready() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	$VBoxContainer/ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
 	$VBoxContainer/HeaderPanel/HeaderHBox/BackButton.pressed.connect(func(): back_pressed.emit())
 	_fab.pressed.connect(_on_fab_pressed)

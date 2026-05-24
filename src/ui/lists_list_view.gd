@@ -9,6 +9,7 @@ const LIST_ROW_SCENE = preload("res://src/ui/list_row.tscn")
 @onready var _detail_view: ListDetailView = $ListDetailView
 
 func _ready() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	$ListsContainer/VBoxContainer/ScrollContainer.get_v_scroll_bar().custom_minimum_size.x = 14
 	_fab.pressed.connect(_on_fab_pressed)
 	_add_dialog.text_confirmed.connect(_on_list_name_confirmed)
@@ -43,6 +44,7 @@ func _on_list_name_confirmed(text: String) -> void:
 func _on_list_open_requested(list: ListResource) -> void:
 	_lists_container.visible = false
 	_detail_view.visible = true
+	_detail_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_detail_view.show_list(list)
 
 func _on_back_pressed() -> void:

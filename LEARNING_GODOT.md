@@ -489,3 +489,73 @@ These are per-node overrides that don't require a `Theme` resource — useful fo
 
 ### `popup()` vs `popup_centered()` on mobile
 `popup_centered()` is convenient but doesn't account for the soft keyboard. Use `popup(Rect2i(position, size))` to control exactly where a dialog appears — position it in the upper half of the screen so the keyboard never covers it.
+
+---
+
+## 12. Control hidden at startup doesn't fill parent when shown — anchors ignored
+
+**Symptom:** A detail view (e.g. `ListDetailView`) is initially hidden (`visible = false`). When shown by tapping a list item, its content renders correctly but is constrained to the top-left corner at roughly half the screen width, instead of filling the full screen.
+
+**Root cause:** Godot 4 skips anchor-based size notifications for Controls that are `visible = false` at startup, as an optimization. The Control never receives the parent's resize event and keeps whatever tiny initial size it had (near zero, or just its combined minimum size). All the correct `.tscn` anchor settings (`anchors_preset = 15`, `anchor_right = 1.0`, etc.) are present and correct, but they only take effect when the parent sends a resize notification — which never happened while the Control was hidden.
+
+**Why the `.tscn` anchors alone don't fix it:** Even with `layout_mode = 1`, `anchors_preset = 15`, `anchor_right = 1.0`, `anchor_bottom = 1.0` all correctly set, if the initial resize notification was never delivered, the stored offset values reflect a parent size of 0 — making the Control render at minimum size.
+
+**Fix — call `set_anchors_and_offsets_preset` just before showing:**
+
+In the parent view's show handler, reset the anchors on the detail view *after* making it visible. At that point the parent already has its correct full-screen size, so offsets are computed to zero:
+
+```gdscript
+func _on_list_open_requested(list: ListResource) -> void:
+    _lists_container.visible = false
+    _detail_view.visible = true
+    _detail_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+    _detail_view.show_list(list)
+```
+
+The key detail: call `set_anchors_and_offsets_preset` **after** `visible = true`, not before. If called while still hidden, the parent size may not yet be available.
+
+**Also required — `layout_mode` on scene root and children:**
+
+The scene file for the detail view (and its parent) must have the correct `layout_mode` values:
+
+```
+# Root node of a standalone scene
+[node name="ListDetailView" type="Control"]
+layout_mode = 3        ← standalone root
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+# Direct child (VBoxContainer) filling the root
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1        ← anchors mode
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+```
+
+When the scene is instanced inside a parent `.tscn`, override the root's `layout_mode` to `1` (anchors) for the instance:
+
+```
+[node name="ListDetailView" parent="." instance=ExtResource("...")]
+layout_mode = 1        ← anchors mode in parent context
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+```
+
+**Diagnostic trick:** Temporarily display the Control's runtime size in a Label to confirm what Godot actually computed:
+
+```gdscript
+func show_list(list: ListResource) -> void:
+    _title_label.text = list.title + " [" + str(int(size.x)) + "x" + str(int(size.y)) + "]"
+```
+
+If the label shows `libri [400x801]` the size is correct. If it shows something small like `libri [56x116]`, the resize notification was never received and the programmatic fix above is needed.
