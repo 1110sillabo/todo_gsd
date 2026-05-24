@@ -559,3 +559,33 @@ func show_list(list: ListResource) -> void:
 ```
 
 If the label shows `libri [400x801]` the size is correct. If it shows something small like `libri [56x116]`, the resize notification was never received and the programmatic fix above is needed.
+
+---
+
+## 13. Sharing a file from Godot on Android — OS.shell_open() is enough
+
+**Context:** Wanted to let the user share an exported JSON file (e.g. via WhatsApp, Gmail, Drive) without adding a native plugin.
+
+**Solution:** After writing the file to the public Downloads directory, call `OS.shell_open(path)`. On Android this fires an implicit Intent on the file, which triggers the system **"Open with / Share"** chooser — the same sheet you'd get from the Files app.
+
+```gdscript
+var path := OS.get_system_dir(OS.SYSTEM_DIR_DOWNLOADS) + "/todo_export.json"
+
+var file := FileAccess.open(path, FileAccess.WRITE)
+file.store_string(JSON.stringify(payload, "\t"))
+file.close()
+
+if OS.has_feature("android"):
+    OS.shell_open(path)   # opens system chooser — email, WhatsApp, Drive, etc.
+```
+
+**Why it works:** The file is in the public Downloads folder, so Android's FileProvider (which Godot uses internally) can serve it to other apps without the `file://` URI restrictions that apply to app-private storage.
+
+**No plugin required.** No Custom Build required. Works on Android 14 / Galaxy A13 (confirmed).
+
+**What doesn't work:** `OS.shell_open(folder_path)` to open a folder in the file manager — that requires a specific Android Intent that Godot doesn't expose. Open the file directly instead.
+
+**Permission needed in export_presets.cfg:**
+```ini
+permissions/write_external_storage=true
+```
